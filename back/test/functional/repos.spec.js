@@ -23,7 +23,7 @@ test("List Repos by Limit", async ({ assert, client }) => {
   assert.equal(items.length, limit);
 }).timeout(20000);
 
-languages.forEach((lng) => {
+['Java',"JavaScript"].forEach((lng) => {
   test(`Filter Repos by Language: [${lng}]`, async ({ assert, client }) => {
     const limit = Math.round(Math.random() * 100);
     const { body, status } = await client
@@ -32,7 +32,7 @@ languages.forEach((lng) => {
       .end();
     const { items } = body;
     const item = items[0];
-
+    console.log(item)
     assert.equal(200, status);
     assert.equal(item["language"], lng);
     assert.equal(items.length, limit);

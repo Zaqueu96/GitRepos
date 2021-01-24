@@ -1,8 +1,8 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
 import Lottie from "react-lottie";
-import { ContentTitle,Title } from "./styles";
+import { ContentTitle, Title, ContainerCustom, ContentBox } from "./styles";
 import animationData from "../../asserts/animations/github.json";
+import TableRepo from "../../components/TableRepository";
 export default function HomePage() {
   const defaultOptions = {
     loop: true,
@@ -11,11 +11,14 @@ export default function HomePage() {
   };
 
   return (
-    <Container>
+    <ContainerCustom>
       <ContentTitle>
         <Lottie options={defaultOptions} height={200} width={200} />
         <Title>Git Repositories</Title>
       </ContentTitle>
-    </Container>
+      <ContentBox>
+        <TableRepo />
+      </ContentBox>
+    </ContainerCustom>
   );
 }
