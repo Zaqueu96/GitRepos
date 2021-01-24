@@ -18,4 +18,5 @@ const Route = use("Route");
 
 Route.group(() => {
   Route.get("/repos", "RepoController.index");
+  Route.get("/languages","LanguageController.index")
 }).prefix("/api");
