@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Lottie from "react-lottie";
-import { ContentTitle, Title, ContainerCustom, ContentBox } from "./styles";
+import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+
+import {
+  ContentTitle,
+  Title,
+  ContainerCustom,
+  ContentBox,
+  ContentSearchBox,
+} from "./styles";
 import animationData from "../../asserts/animations/github.json";
 import TableRepo from "../../components/TableRepository";
 export default function HomePage() {
@@ -15,6 +23,7 @@ export default function HomePage() {
       <ContentTitle>
         <Lottie options={defaultOptions} height={200} width={200} />
         <Title>Git Repositories</Title>
+     
       </ContentTitle>
       <ContentBox>
         <TableRepo />

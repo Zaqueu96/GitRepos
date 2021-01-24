@@ -36,13 +36,13 @@ export default function TablePaginationActions(props) {
 
   return (
     <div className={classes.root}>
-      <IconButton
+      {/* <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
         aria-label="first page"
       >
         {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
+      </IconButton> */}
       <IconButton
         onClick={handleBackButtonClick}
         disabled={page === 0}
@@ -65,13 +65,13 @@ export default function TablePaginationActions(props) {
           <KeyboardArrowRight />
         )}
       </IconButton>
-      <IconButton
+      {/* <IconButton
         onClick={handleLastPageButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label="last page"
       >
         {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
+      </IconButton> */}
     </div>
   );
 }
