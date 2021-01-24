@@ -12,6 +12,7 @@ import {
   Paper,
   TableHead,
   TextField,
+  IconButton,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TablePaginationActions from "./TablePaginationActions";
@@ -19,26 +20,14 @@ import { filter } from "../../services/respos_api";
 import { ContentSearchBox, ContentBox, ContentAnimation } from "./styles";
 import { getAll } from "../../services/language_api";
 import { toast } from "react-toastify";
+import GitHubIcon from "@material-ui/icons/GitHub";
 
 import { css } from "@emotion/core";
-
-const useStyles1 = makeStyles((theme) => ({
-  root: {
-    flexShrink: 0,
-    marginLeft: theme.spacing(2.5),
-  },
-}));
-
 const useStyles2 = makeStyles({
   table: {
     minWidth: 500,
   },
 });
-const override = css`
-  display: block;
-  margin: 0 auto;
-  border-color: red;
-`;
 
 export default function TableCustom() {
   const [rows, setRows] = useState([]);
@@ -162,6 +151,7 @@ export default function TableCustom() {
                 <TableCell align="right">Número(Stars)</TableCell>
                 <TableCell align="right">Data de Criação</TableCell>
                 <TableCell align="right">Ultima Atualização</TableCell>
+                <TableCell align="center">Link</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -193,6 +183,17 @@ export default function TableCustom() {
                       new Date(row.updated_at),
                       "dd/MM/yyyy 'ás' HH:mm:ss"
                     )}
+                  </TableCell>
+                  <TableCell style={{ width: 50 }} align="center">
+                    <IconButton
+                      color="primary"
+                      aria-label="Ver Repositorio"
+                      onClick={() => {
+                        window.open(row.html_url, "_blank");
+                      }}
+                    >
+                      <GitHubIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}

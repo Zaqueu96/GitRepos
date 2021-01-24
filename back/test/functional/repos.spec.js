@@ -32,7 +32,6 @@ test("List Repos by Limit", async ({ assert, client }) => {
       .end();
     const { items } = body;
     const item = items[0];
-    console.log(item)
     assert.equal(200, status);
     assert.equal(item["language"], lng);
     assert.equal(items.length, limit);

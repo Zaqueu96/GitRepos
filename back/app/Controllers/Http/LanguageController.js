@@ -7,7 +7,9 @@ class LanguageController {
       const { data } = await ListLanguage.run();
       return data;
     } catch (e) {
-      return response.status(500).send({ message: "Internal Server Error" });
+      return response
+        .status(500)
+        .send({ message: "Internal Server Error", error: e });
     }
   }
 }
