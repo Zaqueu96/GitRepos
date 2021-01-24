@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 // import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -13,7 +13,7 @@ import {
   TableHead,
 } from "@material-ui/core";
 import TablePaginationActions from "./TablePaginationActions";
-import { getAll } from "../../services/respos_api";
+import { getAll, filter } from "../../services/respos_api";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -30,26 +30,43 @@ const useStyles2 = makeStyles({
 
 export default function TableCustom() {
   const [rows, setRows] = useState([]);
+  const [total, setTotal] = useState(0);
   const classes = useStyles2();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const getFiltered = useCallback(async ({ page: pageM }) => {
+    const {
+      data: { items, total_count },
+    } = await filter({ page: pageM, limit: rowsPerPage });
+    setRows((v) => [...v, ...items]);
+    setTotal(total_count);
+  }, []);
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const handleChangePage = useCallback(async (event, newPage) => {
+    setPage(newPage);
+    if (newPage > page) await getFiltered({ page: newPage });
+  }, []);
+
+  const handleChangeRowsPerPage = useCallback(
+    async (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+      await getFiltered({ page, limit: parseInt(event.target.value, 10) });
+    },
+    [page]
+  );
 
   useEffect(() => {
     async function get() {
-      const { data:{items} } = await getAll();
+      const {
+        data: { items, total_count },
+      } = await filter({ limit: rowsPerPage });
       setRows(items);
+      setTotal(total_count);
     }
 
     get();
@@ -60,7 +77,6 @@ export default function TableCustom() {
       <Table className={classes.table} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
-            <TableCell align="right">Nome</TableCell>
             <TableCell align="right">Nome Completo</TableCell>
             <TableCell align="right">Linguagem</TableCell>
             <TableCell align="right">Número(Stars)</TableCell>
@@ -74,9 +90,6 @@ export default function TableCustom() {
             : rows
           ).map((row) => (
             <TableRow key={row.full_name}>
-            <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
               <TableCell component="th" scope="row">
                 {row.full_name}
               </TableCell>
@@ -104,9 +117,9 @@ export default function TableCustom() {
         <TableFooter>
           <TableRow>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+              rowsPerPageOptions={[5, 10, 25, 50,100]}
               colSpan={3}
-              count={rows.length}
+              count={total}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{
