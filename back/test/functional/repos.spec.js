@@ -4,6 +4,7 @@ const { test, trait } = use("Test/Suite")("Repos Controller");
 
 trait("Test/ApiClient");
 
+return null;
 test("List Repos Default", async ({ assert, client }) => {
   const { body, status } = await client.get("/api/repos").end();
   const { items } = body;
