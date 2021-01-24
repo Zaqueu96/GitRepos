@@ -9,7 +9,8 @@ const ListRepos = use("App/Services/github/ListRepos");
 class RepoController {
   async index({ request, response }) {
     try {
-      const rr = await ListRepos.run();
+      const { page, limit, language } = request.only(['page', 'limit','language']);
+      const rr = await ListRepos.run({ page, limit, language });
       return response.status(200).send(rr);
     } catch (err) {
       console.log(err);
