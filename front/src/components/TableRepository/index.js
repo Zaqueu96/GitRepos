@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 // import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -10,9 +10,10 @@ import {
   TableBody,
   Table,
   Paper,
-  TableHead
+  TableHead,
 } from "@material-ui/core";
-import TablePaginationActions from './TablePaginationActions'
+import TablePaginationActions from "./TablePaginationActions";
+import { getAll } from "../../services/respos_api";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -21,9 +22,6 @@ const useStyles1 = makeStyles((theme) => ({
   },
 }));
 
-
-
-
 const useStyles2 = makeStyles({
   table: {
     minWidth: 500,
@@ -31,7 +29,7 @@ const useStyles2 = makeStyles({
 });
 
 export default function TableCustom() {
-  const [rows,setRows] = useState([]);
+  const [rows, setRows] = useState([]);
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -48,21 +46,21 @@ export default function TableCustom() {
     setPage(0);
   };
 
-  useEffect(()=>{
-    async function get(){
-
+  useEffect(() => {
+    async function get() {
+      const { data:{items} } = await getAll();
+      setRows(items);
     }
 
     get();
-
-  },[])
+  }, []);
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
-            <TableCell>Nome</TableCell>
+            <TableCell align="right">Nome</TableCell>
             <TableCell align="right">Nome Completo</TableCell>
             <TableCell align="right">Linguagem</TableCell>
             <TableCell align="right">Número(Stars)</TableCell>
@@ -76,6 +74,9 @@ export default function TableCustom() {
             : rows
           ).map((row) => (
             <TableRow key={row.full_name}>
+            <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
               <TableCell component="th" scope="row">
                 {row.full_name}
               </TableCell>
