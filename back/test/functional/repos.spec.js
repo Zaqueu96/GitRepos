@@ -1,10 +1,9 @@
 "use strict";
-
+const languages = require("../utils/languages")
 const { test, trait } = use("Test/Suite")("Repos Controller");
 
 trait("Test/ApiClient");
 
-return null;
 test("List Repos Default", async ({ assert, client }) => {
   const { body, status } = await client.get("/api/repos").end();
   const { items } = body;
@@ -24,7 +23,7 @@ test("List Repos by Limit", async ({ assert, client }) => {
   assert.equal(items.length, limit);
 }).timeout(20000);
 
-["Java", "JavaScript"].forEach((lng) => {
+languages.forEach((lng) => {
   test(`Filter Repos by Language: [${lng}]`, async ({ assert, client }) => {
     const limit = Math.round(Math.random() * 100);
     const { body, status } = await client
